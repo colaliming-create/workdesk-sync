@@ -1,0 +1,90 @@
+清单小桌同步推送版 - 上线步骤
+
+准备：
+你需要一个可以运行 Node.js 的平台账号。
+推荐 Railway 或 Render。
+
+先本机测试：
+
+1. 双击 start-local-test.cmd。
+2. 保持弹出的测试窗口不要关闭。
+3. 打开：
+   http://localhost:8788/?room=my-workdesk
+4. 如果想测试桌面图标：
+   双击 create-local-test-shortcut.cmd。
+   然后回到桌面双击“清单小桌同步版”。
+5. 本机测试正常后，再继续下面的正式上线步骤。
+
+第一步：准备推送密钥
+
+如果你电脑有 Node.js：
+
+1. 打开 workdesk-sync-push 文件夹。
+2. 运行 npm install。
+3. 运行 npm run keys。
+4. 复制生成的 Public Key 和 Private Key。
+
+如果你不方便操作，后面也可以让我继续帮你处理。
+
+第二步：上传项目
+
+把整个 workdesk-sync-push 文件夹上传到 Railway、Render 或自己的服务器。
+
+第三步：设置环境变量
+
+在平台的 Environment / Variables 里添加：
+
+VAPID_PUBLIC_KEY = 第一步生成的 Public Key
+VAPID_PRIVATE_KEY = 第一步生成的 Private Key
+VAPID_CONTACT = mailto:你的邮箱
+
+第四步：启动命令
+
+Start Command 填：
+
+npm start
+
+第五步：打开同步链接
+
+部署成功后，平台会给你一个 https 网址。
+
+你自己的同步链接可以这样写：
+
+https://你的网址/?room=my-workdesk
+
+电脑和手机都打开这个链接，就会同步同一份清单。
+
+第六步：手机安装
+
+iPhone：
+Safari 打开链接 -> 分享 -> 添加到主屏幕 -> 打开清单小桌 -> 提醒页点“开启”。
+
+Android：
+Chrome 打开链接 -> 菜单 -> 添加到主屏幕/安装应用 -> 打开清单小桌 -> 提醒页点“开启”。
+
+第七步：电脑桌面快捷方式
+
+如果你希望电脑上像普通软件一样双击打开：
+
+1. 复制你的同步链接。
+   例如：
+   https://你的网址/?room=my-workdesk
+
+2. 双击运行 install-pc-shortcut.cmd。
+
+3. 把同步链接粘贴进去。
+
+4. 桌面会生成“清单小桌同步版”。
+
+5. 以后双击这个图标，就会用独立窗口打开。
+
+第八步：分享给朋友
+
+如果朋友想用自己的清单：
+让朋友把 room 换成自己的名字。
+
+例如：
+https://你的网址/?room=friend-a
+
+如果朋友打开你的 room：
+朋友会看到并修改你的同一份清单。

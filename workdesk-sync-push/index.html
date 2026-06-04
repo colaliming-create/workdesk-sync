@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#eef8f3">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="清单小桌">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>清单小桌</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css?v=8">
+</head>
+<body>
+  <main class="app">
+    <header class="hero">
+      <div>
+        <p id="dateLabel">今天</p>
+        <h1>清单小桌</h1>
+        <button class="sync-pill" id="syncButton" type="button">本机保存</button>
+      </div>
+      <div class="hero-actions">
+        <button class="round-button small" id="installGuideButton" aria-label="添加到桌面">⌂</button>
+        <button class="round-button" id="shareButton" aria-label="分享">+</button>
+      </div>
+    </header>
+
+    <section class="progress-panel">
+      <div>
+        <span>今日进度</span>
+        <strong id="progressText">0 / 0</strong>
+      </div>
+      <div class="progress-track"><div id="progressFill"></div></div>
+    </section>
+
+    <section class="composer">
+      <input id="taskInput" type="text" placeholder="添加要做的事">
+      <div class="grid-row">
+        <select id="taskPriority" aria-label="重要程度">
+          <option value="normal">普通</option>
+          <option value="important">重要</option>
+          <option value="urgent">紧急</option>
+        </select>
+        <input id="taskDate" type="date" aria-label="日期">
+        <input id="taskTime" type="time" aria-label="时间">
+      </div>
+      <button class="primary-button" id="addTaskButton">加入清单</button>
+    </section>
+
+    <nav class="bottom-nav" aria-label="主导航">
+      <button class="active" data-view="today">今日</button>
+      <button data-view="planned">计划</button>
+      <button data-view="reminders">提醒</button>
+      <button data-view="archive">存档</button>
+      <button data-view="notes">便签</button>
+    </nav>
+
+    <section class="view active" id="todayView">
+      <div class="section-title">
+        <h2>今日工作清单</h2>
+        <button class="text-button" data-view-jump="archive">查看存档</button>
+      </div>
+      <ul class="task-list" id="todayList"></ul>
+      <div class="empty-state" id="emptyToday">今天还很清爽</div>
+    </section>
+
+    <section class="view" id="plannedView">
+      <div class="section-title"><h2>计划</h2></div>
+      <ul class="task-list" id="plannedList"></ul>
+      <div class="empty-state" id="emptyPlanned">暂无未来计划</div>
+    </section>
+
+    <section class="view" id="remindersView">
+      <div class="section-title">
+        <h2>提醒</h2>
+        <button class="text-button" id="enableNotifyButton">开启</button>
+      </div>
+      <ul class="task-list" id="reminderList"></ul>
+      <div class="empty-state" id="emptyReminders">暂无定时提醒</div>
+    </section>
+
+    <section class="view" id="archiveView">
+      <div class="section-title"><h2>存档</h2></div>
+      <div class="filter-bar">
+        <input id="archiveDay" type="date" aria-label="某天">
+        <input id="archiveFrom" type="date" aria-label="开始">
+        <input id="archiveTo" type="date" aria-label="结束">
+        <button id="archiveAllButton">全部</button>
+      </div>
+      <ul class="task-list" id="archiveList"></ul>
+      <div class="empty-state" id="emptyArchive">暂无完成记录</div>
+    </section>
+
+    <section class="view" id="notesView">
+      <div class="section-title">
+        <h2>便签</h2>
+        <button class="text-button" id="exportButton">备份</button>
+      </div>
+      <textarea id="notesInput" placeholder="想法、备忘、会议结论"></textarea>
+    </section>
+  </main>
+
+  <dialog id="editDialog">
+    <form method="dialog" class="edit-form">
+      <h2>修改事项</h2>
+      <input id="editTitle" type="text">
+      <input id="editDate" type="date">
+      <input id="editTime" type="time">
+      <select id="editPriority">
+        <option value="normal">普通</option>
+        <option value="important">重要</option>
+        <option value="urgent">紧急</option>
+      </select>
+      <div class="dialog-actions">
+        <button id="cancelEditButton">取消</button>
+        <button class="primary-button" id="saveEditButton">保存</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="installDialog">
+    <form method="dialog" class="edit-form install-guide">
+      <h2>添加到手机桌面</h2>
+      <section>
+        <h3>iPhone</h3>
+        <p>用 Safari 打开这个页面，点底部分享按钮，选择“添加到主屏幕”。</p>
+      </section>
+      <section>
+        <h3>Android</h3>
+        <p>用 Chrome 打开这个页面，点右上角菜单，选择“添加到主屏幕”或“安装应用”。</p>
+      </section>
+      <p class="install-note">当前是本地 Wi-Fi 测试地址，部分手机浏览器不会显示安装入口。正式部署成 https 网址后，添加到桌面会更稳定。</p>
+      <div class="dialog-actions single">
+        <button class="primary-button" id="closeInstallGuideButton">知道啦</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast"></div>
+  <script src="calendar.js?v=4"></script>
+  <script src="app.js?v=8"></script>
+</body>
+</html>
