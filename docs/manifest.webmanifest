@@ -1,0 +1,26 @@
+{
+  "name": "\u6e05\u5355\u5c0f\u684c",
+  "short_name": "\u6e05\u5355",
+  "description": "\u9002\u5408\u624b\u673a\u4e3b\u5c4f\u5e55\u7684\u6e05\u5355\u3001\u63d0\u9192\u548c\u5b58\u6863\u5c0f\u5e94\u7528\u3002",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#eef8f3",
+  "theme_color": "#65b891",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
