@@ -1,11 +1,11 @@
-const cacheName = "workdesk-pages-supabase-v1";
+const cacheName = "workdesk-pages-supabase-v2";
 const assets = [
   "./",
   "index.html",
-  "styles.css?v=8",
+  "styles.css?v=9",
   "calendar.js?v=4",
   "supabase-config.js?v=1",
-  "app.js?v=9",
+  "app.js?v=10",
   "manifest.webmanifest",
   "icons/icon.svg",
   "icons/icon-192.png",

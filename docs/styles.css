@@ -141,7 +141,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--mint); box-shado
   background: #fbfefd;
 }
 .task-item.done { opacity: .72; }
-.task-title { overflow-wrap: anywhere; font-weight: 800; }
+.task-title { overflow-wrap: break-word; word-break: normal; font-weight: 800; }
 .task-item.done .task-title { text-decoration: line-through; }
 .meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
 .badge { padding: 3px 8px; border-radius: 999px; color: #40524b; background: #edf3f0; font-size: 12px; }

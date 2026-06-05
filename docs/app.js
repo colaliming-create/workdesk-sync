@@ -26,6 +26,7 @@ let syncRoom = getRoomFromUrl() || localStorage.getItem(roomKey) || "";
 let syncTimer = null;
 let lastPulledAt = 0;
 let isApplyingRemote = false;
+let taskInputComposing = false;
 const supabaseConfig = window.WORKDESK_SUPABASE || {};
 const hasSupabase = Boolean(supabaseConfig.url && supabaseConfig.anonKey);
 
@@ -153,7 +154,7 @@ function sortTasks(tasks) {
 function render() {
   els.dateLabel.textContent = new Intl.DateTimeFormat("zh-CN", { month: "long", day: "numeric", weekday: "long" }).format(new Date());
   els.taskDate.value = els.taskDate.value || todayValue();
-  els.notesInput.value = state.notes || "";
+  if (document.activeElement !== els.notesInput) els.notesInput.value = state.notes || "";
   renderSyncStatus(syncRoom ? text.synced : text.localOnly);
   renderLists();
   renderProgress();
@@ -167,7 +168,7 @@ function renderSyncStatus(label, kind = "") {
 
 function renderLists() {
   const today = todayValue();
-  renderList(els.todayList, els.emptyToday, sortTasks(state.tasks.filter((task) => !task.done && task.dueDate === today)));
+  renderList(els.todayList, els.emptyToday, sortTasks(state.tasks.filter((task) => !task.done && task.dueDate <= today)));
   renderList(els.plannedList, els.emptyPlanned, sortTasks(state.tasks.filter((task) => !task.done && task.dueDate > today)));
   renderList(els.reminderList, els.emptyReminders, sortTasks(state.tasks.filter((task) => !task.done && task.time)));
   renderArchive();
@@ -194,9 +195,10 @@ function renderList(list, empty, tasks) {
 }
 
 function renderProgress() {
-  const today = state.tasks.filter((task) => task.dueDate === todayValue());
-  const done = today.filter((task) => task.done).length;
-  const total = today.length;
+  const today = todayValue();
+  const open = state.tasks.filter((task) => !task.done && task.dueDate <= today);
+  const done = state.tasks.filter((task) => task.done && timestampDay(task.completedAt) === today).length;
+  const total = open.length + done;
   els.progressText.textContent = `${done} / ${total}`;
   els.progressFill.style.width = `${total ? Math.round((done / total) * 100) : 0}%`;
 }
@@ -550,7 +552,11 @@ function urlBase64ToUint8Array(value) {
 }
 
 els.addTaskButton.addEventListener("click", addTask);
-els.taskInput.addEventListener("keydown", (event) => { if (event.key === "Enter") addTask(); });
+els.taskInput.addEventListener("compositionstart", () => { taskInputComposing = true; });
+els.taskInput.addEventListener("compositionend", () => { taskInputComposing = false; });
+els.taskInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" && !event.isComposing && event.keyCode !== 229 && !taskInputComposing) addTask();
+});
 els.notesInput.addEventListener("input", () => { state.notes = els.notesInput.value; saveState(); });
 els.enableNotifyButton.addEventListener("click", enableNotifications);
 els.shareButton.addEventListener("click", shareApp);

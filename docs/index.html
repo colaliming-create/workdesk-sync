@@ -11,7 +11,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
-  <link rel="stylesheet" href="styles.css?v=8">
+  <link rel="stylesheet" href="styles.css?v=9">
 </head>
 <body>
   <main class="app">
@@ -36,7 +36,7 @@
     </section>
 
     <section class="composer">
-      <input id="taskInput" type="text" placeholder="添加要做的事">
+      <input id="taskInput" type="text" placeholder="添加要做的事" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
       <div class="grid-row">
         <select id="taskPriority" aria-label="重要程度">
           <option value="normal">普通</option>
@@ -98,14 +98,14 @@
         <h2>便签</h2>
         <button class="text-button" id="exportButton">备份</button>
       </div>
-      <textarea id="notesInput" placeholder="想法、备忘、会议结论"></textarea>
+      <textarea id="notesInput" placeholder="想法、备忘、会议结论" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
     </section>
   </main>
 
   <dialog id="editDialog">
     <form method="dialog" class="edit-form">
       <h2>修改事项</h2>
-      <input id="editTitle" type="text">
+      <input id="editTitle" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
       <input id="editDate" type="date">
       <input id="editTime" type="time">
       <select id="editPriority">
@@ -141,6 +141,6 @@
   <div class="toast" id="toast"></div>
   <script src="supabase-config.js?v=1"></script>
   <script src="calendar.js?v=4"></script>
-  <script src="app.js?v=9"></script>
+  <script src="app.js?v=10"></script>
 </body>
 </html>
